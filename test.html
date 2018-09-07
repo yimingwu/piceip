@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  </head>
+<body>
+  <!-- 追加 -->
+  <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <div id="test"></div>
+  <div class="container mt-4">
+  <div class="d-flex justify-content-center">
+    <div class="card" style="width: 18rem;">
+     <img id="user-img" src="https://profile.line-scdn.net/0m0029252672517e745a774fb26735ffd29318da43309c" alt="..." class="rounded-circle mx-auto mt-3" width="100" height="100">
+      <div class="card-body">
+        <h5 class="card-title text-center" id="user-name">測試君</h5>
+        <p class="card-text"  id="user-desc">測試</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" id="user-id">UserID:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</li>
+       
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">CopyAll</a>
+      </div>
+    </div>
+      
+  </div>
+  <div id="error-msg" class="alert alert-danger d-none justify-content-center mx-auto mt-3" role="alert" style="width: 18rem;word-break: break-all;">
+  This is a danger alert—check it out!
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>$(window).on('load', function () {
+  liff.init(function (data) {
+    //document.getElementById("test").innerHTML = JSON.stringify(data);
+ liff.getProfile().then(profile=>{
+      //document.getElementById("test").innerHTML = JSON.stringify(profile);
+      document.getElementById("user-name").innerHTML = profile.displayName;
+      document.getElementById("user-desc").innerHTML = profile.statusMessage;
+      document.getElementById("user-id").innerHTML = profile.userId;
+      $('#user-img').attr('src',profile.pictureUrl);
+      let mag = [
+    {
+      "type": "action",
+      "action": {
+        "type": "cameraRoll",
+        "label": "Send photo"
+      }
+    },
+    {
+      "type": "action",
+      "action": {
+        "type": "camera",
+        "label": "Open camera"
+      }
+    }
+  ];
+   
+  $('.card-link').click(function () {
+    alert('我要送訊息了');
+                liff.sendMessages([
+                 {
+                     type: 'text',
+                     text: '我是在測試喇\n我是在測試喇\n我是在測試喇'
+                 }
+                ])
+               .then(() => {
+                   alert('送好了');
+               }).catch((err) => {
+                  alert('有錯啊');
+                   $('#error-msg').addClass('d-flex');
+                   $('#error-msg').removeClass('d-none');
+                  document.getElementById("error-msg").innerHTML = JSON.stringify(err);
+                  console.log('error', err);
+              });
+            });
+   });
+  });
+
+});
+
+//# sourceURL=pen.js
+</script>
+</body>
+</html>
